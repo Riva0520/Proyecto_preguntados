@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
-#include <conio.h>    // Para _kbhit() y getch()
+#include <conio.h>    
 
 void limpiar_pantalla() {
 #ifdef _WIN32
@@ -11,21 +11,20 @@ void limpiar_pantalla() {
 #endif
 }
 
-// --- Función 'leer_con_tiempo' MEJORADA ---
+
 int leer_con_tiempo(int segundos_max) {
 
     int tiempo = 0;
     char buffer[10];
     int pos = 0;
 
-    // <<< CORREGIDO: Cálculo para un temporizador responsivo >>>
     // 1000ms / 50ms = 20 iteraciones por segundo
     int iteraciones_por_segundo = 20;
     int iter_actual = 0;
 
     printf("\n(Tienes %d segundos para responder)\n", segundos_max);
 
-    // Limpiar el buffer
+   
     buffer[pos] = '\0';
 
     while (tiempo < segundos_max) {
@@ -33,31 +32,31 @@ int leer_con_tiempo(int segundos_max) {
         if (_kbhit()) {    // Si el usuario escribe algo
             char c = getch();
 
-            // <<< CORREGIDO: Lógica para BORRAR (Backspace) >>>
-            if (c == 8) { // 8 es el código ASCII de Backspace
+        
+            if (c == 8) {
                 if (pos > 0) {
                     pos--;
                     buffer[pos] = '\0';
-                    printf("\b \b"); // Mueve cursor atrás, imprime espacio, mueve atrás
+                    printf("\b \b"); 
                 }
             }
-            // <<< CORREGIDO: Lógica para ENTER (solo si se ha escrito algo) >>>
+            // LÃ³gica para ENTER (solo si se ha escrito algo) 
             else if (c == '\r' && pos > 0) {  // Enter -> fin de entrada
                 return atoi(buffer);
             }
-            // <<< CORREGIDO: Lógica para NÚMEROS (y evitar desbordamiento) >>>
+            //LÃ³gica para NÃšMEROS (y evitar desbordamiento) 
             else if (c >= '0' && c <= '9' && pos < 9) {
                 printf("%c", c);
                 buffer[pos++] = c;
-                buffer[pos] = '\0'; // Siempre mantener el fin de cadena
+                buffer[pos] = '\0';
             }
         }
 
-        // <<< CORREGIDO: Temporizador responsivo >>>
+        
         Sleep(50);    // Esperar solo 50ms en lugar de 1000ms
         iter_actual++;
 
-        // Si se completó 1 segundo (20 iteraciones * 50ms)
+        
         if (iter_actual >= iteraciones_por_segundo) {
             tiempo++;
             iter_actual = 0;
@@ -114,7 +113,7 @@ int main() {
 
             preguntas[2] = "20 / 5";
             opciones[2][0] = "5"; opciones[2][1] = "6"; opciones[2][2] = "4"; opciones[2][3] = "3";
-            correcta[2] = 3; // <<< CORREGIDO (Era 1)
+            correcta[2] = 3; 
 
             preguntas[3] = "12 * 12";
             opciones[3][0] = "124"; opciones[3][1] = "132"; opciones[3][2] = "144"; opciones[3][3] = "122";
@@ -142,7 +141,7 @@ int main() {
 
             preguntas[9] = "25 + 40";
             opciones[9][0] = "50"; opciones[9][1] = "60"; opciones[9][2] = "70"; opciones[9][3] = "65";
-            correcta[9] = 4; // <<< CORREGIDO (Era 3)
+            correcta[9] = 4;
 
             break;
 
@@ -159,7 +158,7 @@ int main() {
             opciones[2][0] = "Gravitacion"; opciones[2][1] = "2da Ley Newton"; opciones[2][2] = "Ohm"; opciones[2][3] = "Pascal";
             correcta[2] = 2;
 
-            // ... (resto de preguntas de física) ...
+            // ... (resto de preguntas de fÃ­sica) ...
             preguntas[3] = "Unidad de energia";
             opciones[3][0] = "Newton"; opciones[3][1] = "Joule"; opciones[3][2] = "Lux"; opciones[3][3] = "Tesla";
             correcta[3] = 2;
@@ -197,7 +196,7 @@ int main() {
             opciones[2][0] = "Ionico"; opciones[2][1] = "Covalente"; opciones[2][2] = "Metalico"; opciones[2][3] = "Nuclear";
             correcta[2] = 2;
 
-            // ... (resto de preguntas de química) ...
+            // ... (resto de preguntas de quÃ­mica) ...
             preguntas[3] = "PH Acido";
             opciones[3][0] = "2"; opciones[3][1] = "7"; opciones[3][2] = "10"; opciones[3][3] = "12";
             correcta[3] = 1;
@@ -224,7 +223,7 @@ int main() {
         }
 
         // ---- BUCLE DE PREGUNTAS ----
-        // (No se necesita 'if (opcion >= 1 && opcion <= 3)' si 'default' está vacío)
+        // (No se necesita 'if (opcion >= 1 && opcion <= 3)' si 'default' estÃ¡ vacÃ­o)
         if (opcion >= 1 && opcion <= 3) {
             int i;
             int puntaje_ronda = 0;
@@ -238,7 +237,7 @@ int main() {
 
                 printf("Respuesta: ");
 
-                respuesta = leer_con_tiempo(15); // <<< TIEMPO LÍMITE (usa la función mejorada)
+                respuesta = leer_con_tiempo(15); // <<< TIEMPO LÃMITE (usa la funciÃ³n mejorada)
 
                 if (respuesta == -1) {
                     printf("\nTiempo agotado!\n");
@@ -279,3 +278,4 @@ int main() {
 
     return 0;
 }
+
